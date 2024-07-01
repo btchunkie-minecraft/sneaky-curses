@@ -7,7 +7,7 @@ buildscript {
         maven { url = "https://cursemaven.com" }
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '6.0.+', changing: true
         classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
         classpath group: 'org.parchmentmc', name: 'librarian', version: '1.+'
     }
@@ -80,10 +80,10 @@ dependencies {
     runtimeOnly fg.deobf("curse.maven:configmenusforge-544048:3671318")
 
     // from local maven, those builds are not obfuscated
-    implementation fg.deobf("fuzs.puzzleslib:PuzzlesLib:${puzzlesVersion}")
+    // implementation fg.deobf("fuzs.puzzleslib:PuzzlesLib:${puzzlesVersion}")
     // try use curse maven when local maven is not available
     // file id is end of url (7 digits usually) when on file details page on curse
-//    implementation fg.deobf("curse.maven:puzzles-lib:<file-id>")
+   implementation fg.deobf("curse.maven:puzzleslib-495476:5114509")
 }
 
 mixin {
@@ -154,7 +154,7 @@ def createJarTask(def name, def type, def sources) {
         from sources
         from rootProject.file("LICENSE")
         from rootProject.file("CHANGELOG.md")
-        classifier = type
+        archiveClassifier = type
         manifest { attributes(project.jarAttributes) }
         dependsOn classes
         group 'jar'
@@ -333,3 +333,8 @@ tasks.getByPath('curseforge').finalizedBy project.refreshUpdateJson
 // only copy when building manually
 project.copyJarToDir.dependsOn signJar
 build.finalizedBy project.copyJarToDir, project.incrementBuildNumber
+
+// Handle ARM-based CPU's
+if (System.getProperty("os.arch") == 'aarch64') {
+    apply from: "https://moddingtutorials.org/applesilicon.gradle"
+}
