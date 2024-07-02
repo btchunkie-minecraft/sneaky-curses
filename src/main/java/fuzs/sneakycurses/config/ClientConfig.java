@@ -3,6 +3,7 @@ package fuzs.sneakycurses.config;
 import fuzs.puzzleslib.config.AbstractConfig;
 import fuzs.puzzleslib.config.annotation.Config;
 
+@SuppressWarnings("removal")
 public class ClientConfig extends AbstractConfig {
     @Config(description = "Hide curse enchantments from the item tooltip.")
     public boolean hideCurses = true;
@@ -15,6 +16,7 @@ public class ClientConfig extends AbstractConfig {
     @Config(name = "shift_shows_curses", description = "Temporarily show tooltip as usual including curses while shift key is held.")
     public boolean shiftShows = false;
 
+    @SuppressWarnings("deprecation")
     public ClientConfig() {
         super("");
     }

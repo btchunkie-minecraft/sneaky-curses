@@ -16,10 +16,13 @@ public abstract class GuiMixin {
     @Shadow
     protected ItemStack lastToolHighlight;
 
+    @SuppressWarnings("deprecation")
     @ModifyVariable(method = "renderSelectedItemName", at = @At("STORE"), ordinal = 0)
     public MutableComponent renderSelectedItemName$storeHoverNameComponent(MutableComponent mutablecomponent) {
-        if (!CurseMatcher.isAffected(this.lastToolHighlight)) return mutablecomponent;
-        if (!SneakyCurses.CONFIG.client().colorName) return mutablecomponent;
+        if (!CurseMatcher.isAffected(this.lastToolHighlight))
+            return mutablecomponent;
+        if (!SneakyCurses.CONFIG.client().colorName)
+            return mutablecomponent;
         return mutablecomponent.withStyle(ChatFormatting.RED);
     }
 }

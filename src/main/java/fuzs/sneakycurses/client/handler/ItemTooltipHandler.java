@@ -20,13 +20,16 @@ import java.util.stream.Collectors;
 public class ItemTooltipHandler {
     @SubscribeEvent
     public void onItemTooltip(final ItemTooltipEvent evt) {
-        if (!CurseMatcher.isAffected(evt.getItemStack())) return;
+        if (!CurseMatcher.isAffected(evt.getItemStack()))
+            return;
         this.dyeHoverName(evt.getToolTip());
         this.hideCurses(evt.getToolTip(), this.getCursesAsTooltip(evt.getItemStack()));
     }
 
+    @SuppressWarnings("deprecation")
     private void dyeHoverName(List<Component> tooltip) {
-        if (!SneakyCurses.CONFIG.client().colorName) return;
+        if (!SneakyCurses.CONFIG.client().colorName)
+            return;
         TextComponent hoverName = null;
         for (Component value : tooltip) {
             if (value instanceof TextComponent component && component.getText().equals("")) {
@@ -39,13 +42,17 @@ public class ItemTooltipHandler {
         }
     }
 
+    @SuppressWarnings("deprecation")
     private void hideCurses(List<Component> tooltip, List<String> curses) {
-        if (!SneakyCurses.CONFIG.client().hideCurses) return;
-        // use this approach for compatibility with enchantment descriptions mod as this also matches their description key format
+        if (!SneakyCurses.CONFIG.client().hideCurses)
+            return;
+        // use this approach for compatibility with enchantment descriptions mod as this
+        // also matches their description key format
         Iterator<Component> iterator = tooltip.iterator();
         while (iterator.hasNext()) {
             Component component = iterator.next();
-            if (component instanceof TranslatableComponent translatableComponent && translatableComponent.getKey().startsWith("enchantment")) {
+            if (component instanceof TranslatableComponent translatableComponent
+                    && translatableComponent.getKey().startsWith("enchantment")) {
                 for (String curse : curses) {
                     if (translatableComponent.getKey().startsWith(curse)) {
                         iterator.remove();

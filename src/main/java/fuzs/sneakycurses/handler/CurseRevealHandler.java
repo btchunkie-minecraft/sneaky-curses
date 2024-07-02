@@ -16,6 +16,7 @@ import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.Level;
 
 import java.util.Objects;
 
@@ -23,6 +24,7 @@ public class CurseRevealHandler {
     public static final String KEY_ITEM_CURSES_REVEALED = "item." + SneakyCurses.MOD_ID + ".curses_revealed";
     public static final String TAG_CURSES_REVEALED = SneakyCurses.id("curses_revealed").toString();
 
+    @SuppressWarnings("deprecation")
     public static EventResult onAnvilUpdate(ItemStack leftInput, ItemStack rightInput, MutableValue<ItemStack> output,
             String itemName, MutableInt enchantmentCost, MutableInt materialCost, Player player) {
         if (isAffected(leftInput) && rightInput.is(ModRegistry.REVEALS_CURSES_ITEM_TAG)
@@ -37,8 +39,10 @@ public class CurseRevealHandler {
         return EventResult.PASS;
     }
 
+    @SuppressWarnings("deprecation")
     public static EventResult onLivingTick(LivingEntity entity) {
-        if (!entity.getLevel().isClientSide && entity.tickCount % 1200 == 0
+        Level level = entity.getLevel();
+        if (!level.isClientSide && entity.tickCount % 1200 == 0
                 && (!(entity instanceof Player player) || !player.getAbilities().invulnerable)) {
             for (EquipmentSlot equipmentSlot : EquipmentSlot.values()) {
                 ItemStack itemStack = entity.getItemBySlot(equipmentSlot);
@@ -49,13 +53,13 @@ public class CurseRevealHandler {
                         revealAllCurses(itemStack);
                         entity.playSound(SoundEvents.ENCHANTMENT_TABLE_USE, 1.0F,
                                 entity.getRandom().nextFloat() * 0.1F + 0.9F);
-                        if (entity instanceof Player player) {
-                            // TODO: Fix displaying message.
-                            // player.displayClientMessage(
-                            // Component.translatable(KEY_ITEM_CURSES_REVEALED, itemStack.getDisplayName())
-                            // .withStyle(ChatFormatting.DARK_PURPLE),
-                            // false);
-                        }
+                        // TODO: Fix displaying message.
+                        // if (entity instanceof Player player) {
+                        // player.displayClientMessage(
+                        // Component.translatable(KEY_ITEM_CURSES_REVEALED, itemStack.getDisplayName())
+                        // .withStyle(ChatFormatting.DARK_PURPLE),
+                        // false);
+                        // }
                         break;
                     }
                 }
@@ -89,6 +93,7 @@ public class CurseRevealHandler {
                 .filter(Objects::nonNull).anyMatch(Enchantment::isCurse);
     }
 
+    @SuppressWarnings("deprecation")
     public static boolean isAffected(ItemStack itemStack) {
         if (itemStack.getItem() instanceof EnchantedBookItem) {
             if (!SneakyCurses.CONFIG.server().affectBooks) {

@@ -3,6 +3,7 @@ package fuzs.sneakycurses.config;
 import fuzs.puzzleslib.config.AbstractConfig;
 import fuzs.puzzleslib.config.annotation.Config;
 
+@SuppressWarnings("removal")
 public class ServerConfig extends AbstractConfig {
     @Config(name = "obfuscate_curses_on_tooltips", description = "Obfuscate curse enchantments with enchantment runes on item tooltips.")
     public boolean obfuscateCurses = true;
@@ -19,6 +20,7 @@ public class ServerConfig extends AbstractConfig {
     @Config.DoubleRange(min = 0.0, max = 1.0)
     public double curseRevealChance = 0.05;
 
+    @SuppressWarnings("deprecation")
     public ServerConfig() {
         super("");
     }

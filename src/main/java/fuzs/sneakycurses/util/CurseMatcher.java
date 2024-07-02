@@ -22,10 +22,13 @@ public class CurseMatcher {
                 .allMatch(Enchantment::isCurse);
     }
 
+    @SuppressWarnings("deprecation")
     public static boolean isAffected(ItemStack stack) {
-        if (stack.isEmpty() || SneakyCurses.CONFIG.client().shiftShows && Screen.hasShiftDown()) return false;
+        if (stack.isEmpty() || SneakyCurses.CONFIG.client().shiftShows && Screen.hasShiftDown())
+            return false;
         if (stack.getItem() instanceof EnchantedBookItem) {
-            if (!SneakyCurses.CONFIG.client().affectBooks) return false;
+            if (!SneakyCurses.CONFIG.client().affectBooks)
+                return false;
             return anyEnchantIsCursed(stack) && !allEnchantsAreCursed(stack);
         }
         return anyEnchantIsCursed(stack);

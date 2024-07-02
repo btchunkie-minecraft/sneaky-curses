@@ -11,10 +11,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Item.class)
 public abstract class ItemMixin {
+    @SuppressWarnings("deprecation")
     @Inject(method = "isFoil", at = @At("HEAD"), cancellable = true)
     public void isFoil$head(ItemStack stack, CallbackInfoReturnable<Boolean> callbackInfo) {
-        if (!CurseMatcher.isAffected(stack)) return;
-        if (!SneakyCurses.CONFIG.client().disguiseItem) return;
+        if (!CurseMatcher.isAffected(stack))
+            return;
+        if (!SneakyCurses.CONFIG.client().disguiseItem)
+            return;
         if (CurseMatcher.allEnchantsAreCursed(stack)) {
             callbackInfo.setReturnValue(false);
         }
