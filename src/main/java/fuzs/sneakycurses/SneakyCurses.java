@@ -29,9 +29,9 @@ public class SneakyCurses {
     public static final String MOD_NAME = "Sneaky Curses";
     public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
 
-    @SuppressWarnings({ "Convert2MethodRef", "deprecation" })
+    @SuppressWarnings("deprecation")
     public static final ConfigHolder<ClientConfig, ServerConfig> CONFIG = ConfigHolder
-            .of(() -> new ClientConfig(), () -> new ServerConfig());
+            .of(ClientConfig::new, ServerConfig::new);
 
     @SuppressWarnings("deprecation")
     @SubscribeEvent
