@@ -20,7 +20,11 @@ import net.minecraft.world.level.Level;
 
 import java.util.Objects;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class CurseRevealHandler {
+    public static final Logger LOGGER = LogManager.getLogger(SneakyCurses.MOD_NAME);
     public static final String KEY_ITEM_CURSES_REVEALED = "item." + SneakyCurses.MOD_ID + ".curses_revealed";
     public static final String TAG_CURSES_REVEALED = SneakyCurses.id("curses_revealed").toString();
 
@@ -69,23 +73,23 @@ public class CurseRevealHandler {
     }
 
     public static void revealAllCurses(ItemStack itemStack) {
-        if (anyEnchantIsCursed(itemStack)) {
-            CompoundTag tag = itemStack.getTag();
-            if (tag == null || !tag.getBoolean(TAG_CURSES_REVEALED)) {
-                tag = itemStack.getOrCreateTag();
-                tag.putBoolean(TAG_CURSES_REVEALED, true);
-            }
+        if (!anyEnchantIsCursed(itemStack)) {
+            return;
+        }
+        CompoundTag tag = itemStack.getTag();
+        if (tag == null || !tag.getBoolean(TAG_CURSES_REVEALED)) {
+            tag = itemStack.getOrCreateTag();
+            tag.putBoolean(TAG_CURSES_REVEALED, true);
         }
     }
 
     public static boolean allCursesRevealed(ItemStack itemStack) {
-        if (!itemStack.isEmpty()) {
-            CompoundTag tag = itemStack.getTag();
-            return tag != null && tag.contains(TAG_CURSES_REVEALED, Tag.TAG_BYTE)
-                    && tag.getBoolean(TAG_CURSES_REVEALED);
-        } else {
+        if (itemStack.isEmpty()) {
             return false;
         }
+        CompoundTag tag = itemStack.getTag();
+        return tag != null && tag.contains(TAG_CURSES_REVEALED, Tag.TAG_BYTE)
+                && tag.getBoolean(TAG_CURSES_REVEALED);
     }
 
     public static boolean anyEnchantIsCursed(ItemStack itemStack) {
