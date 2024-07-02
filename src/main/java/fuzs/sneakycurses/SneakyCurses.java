@@ -1,5 +1,7 @@
 package fuzs.sneakycurses;
 
+import fuzs.puzzleslib.api.event.v1.entity.living.LivingEvents;
+import fuzs.puzzleslib.api.event.v1.entity.player.AnvilUpdateCallback;
 import fuzs.puzzleslib.PuzzlesLib;
 import fuzs.puzzleslib.config.AbstractConfig;
 import fuzs.puzzleslib.config.ConfigHolder;
@@ -19,11 +21,18 @@ public class SneakyCurses {
     public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
 
     @SuppressWarnings("Convert2MethodRef")
-    public static final ConfigHolder<ClientConfig, AbstractConfig> CONFIG = ConfigHolder.client(() -> new ClientConfig());
+    public static final ConfigHolder<ClientConfig, AbstractConfig> CONFIG = ConfigHolder
+            .client(() -> new ClientConfig());
 
     @SubscribeEvent
     public static void onConstructMod(final FMLConstructModEvent evt) {
         ((ConfigHolderImpl<?, ?>) CONFIG).addConfigs(MOD_ID);
         PuzzlesLib.setSideOnly();
+        registerHandlers();
+    }
+
+    private static void registerHandlers() {
+        AnvilUpdateCallback.EVENT.register(CurseRevealHandler::onAnvilUpdate);
+        LivingEvents.TICK.register(CurseRevealHandler::onLivingTick);
     }
 }
