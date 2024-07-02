@@ -7,6 +7,9 @@ import fuzs.puzzleslib.config.AbstractConfig;
 import fuzs.puzzleslib.config.ConfigHolder;
 import fuzs.puzzleslib.config.ConfigHolderImpl;
 import fuzs.sneakycurses.config.ClientConfig;
+import fuzs.sneakycurses.config.ServerConfig;
+import fuzs.sneakycurses.handler.CurseRevealHandler;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
@@ -21,8 +24,8 @@ public class SneakyCurses {
     public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
 
     @SuppressWarnings("Convert2MethodRef")
-    public static final ConfigHolder<ClientConfig, AbstractConfig> CONFIG = ConfigHolder
-            .client(() -> new ClientConfig());
+    public static final ConfigHolder<ClientConfig, ServerConfig> CONFIG = ConfigHolder
+            .of(() -> new ClientConfig(), () -> new ServerConfig());
 
     @SubscribeEvent
     public static void onConstructMod(final FMLConstructModEvent evt) {
@@ -34,5 +37,9 @@ public class SneakyCurses {
     private static void registerHandlers() {
         AnvilUpdateCallback.EVENT.register(CurseRevealHandler::onAnvilUpdate);
         LivingEvents.TICK.register(CurseRevealHandler::onLivingTick);
+    }
+
+    public static ResourceLocation id(String path) {
+        return new ResourceLocation(MOD_ID, path);
     }
 }

@@ -4,12 +4,9 @@ import fuzs.puzzleslib.api.event.v1.core.EventResult;
 import fuzs.puzzleslib.api.event.v1.data.MutableInt;
 import fuzs.puzzleslib.api.event.v1.data.MutableValue;
 import fuzs.sneakycurses.SneakyCurses;
-import fuzs.sneakycurses.config.ServerConfig;
 import fuzs.sneakycurses.init.ModRegistry;
-import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -34,29 +31,30 @@ public class CurseRevealHandler {
             revealAllCurses(itemStack);
             output.accept(itemStack);
             materialCost.accept(1);
-            enchantmentCost.accept(SneakyCurses.CONFIG.get(ServerConfig.class).revealCursesCost);
+            enchantmentCost.accept(SneakyCurses.CONFIG.server().revealCursesCost);
             return EventResult.INTERRUPT;
         }
         return EventResult.PASS;
     }
 
     public static EventResult onLivingTick(LivingEntity entity) {
-        if (!entity.level().isClientSide && entity.tickCount % 1200 == 0
+        if (!entity.getLevel().isClientSide && entity.tickCount % 1200 == 0
                 && (!(entity instanceof Player player) || !player.getAbilities().invulnerable)) {
             for (EquipmentSlot equipmentSlot : EquipmentSlot.values()) {
                 ItemStack itemStack = entity.getItemBySlot(equipmentSlot);
                 if (Mob.getEquipmentSlotForItem(itemStack).equals(equipmentSlot) && anyEnchantIsCursed(itemStack)
                         && !allCursesRevealed(itemStack)) {
                     if (entity.getRandom()
-                            .nextDouble() < SneakyCurses.CONFIG.get(ServerConfig.class).curseRevealChance) {
+                            .nextDouble() < SneakyCurses.CONFIG.server().curseRevealChance) {
                         revealAllCurses(itemStack);
                         entity.playSound(SoundEvents.ENCHANTMENT_TABLE_USE, 1.0F,
                                 entity.getRandom().nextFloat() * 0.1F + 0.9F);
                         if (entity instanceof Player player) {
-                            player.displayClientMessage(
-                                    Component.translatable(KEY_ITEM_CURSES_REVEALED, itemStack.getDisplayName())
-                                            .withStyle(ChatFormatting.DARK_PURPLE),
-                                    false);
+                            // TODO: Fix displaying message.
+                            // player.displayClientMessage(
+                            // Component.translatable(KEY_ITEM_CURSES_REVEALED, itemStack.getDisplayName())
+                            // .withStyle(ChatFormatting.DARK_PURPLE),
+                            // false);
                         }
                         break;
                     }
@@ -93,7 +91,7 @@ public class CurseRevealHandler {
 
     public static boolean isAffected(ItemStack itemStack) {
         if (itemStack.getItem() instanceof EnchantedBookItem) {
-            if (!SneakyCurses.CONFIG.get(ServerConfig.class).affectBooks) {
+            if (!SneakyCurses.CONFIG.server().affectBooks) {
                 return false;
             }
         }
