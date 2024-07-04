@@ -48,7 +48,9 @@ public class CurseRevealHandler {
     @SuppressWarnings("deprecation")
     public static EventResult onLivingTick(LivingEntity entity) {
         Level level = entity.getLevel();
-        if (!level.isClientSide && entity.tickCount % 1200 == 0
+        // if (!level.isClientSide && entity.tickCount % 1200 == 0
+        if (!level.isClientSide && entity.tickCount % SneakyCurses.CONFIG
+                .server().revealChanceTickInterval == 0
                 && (!(entity instanceof Player player) || !player.getAbilities().invulnerable)) {
             for (EquipmentSlot equipmentSlot : EquipmentSlot.values()) {
                 ItemStack itemStack = entity.getItemBySlot(equipmentSlot);
