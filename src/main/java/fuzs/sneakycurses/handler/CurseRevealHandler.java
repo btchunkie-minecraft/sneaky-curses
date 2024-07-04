@@ -5,8 +5,10 @@ import fuzs.puzzleslib.api.event.v1.data.MutableInt;
 import fuzs.puzzleslib.api.event.v1.data.MutableValue;
 import fuzs.sneakycurses.SneakyCurses;
 import fuzs.sneakycurses.init.ModRegistry;
+import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -46,7 +48,8 @@ public class CurseRevealHandler {
     @SuppressWarnings("deprecation")
     public static EventResult onLivingTick(LivingEntity entity) {
         Level level = entity.getLevel();
-        if (!level.isClientSide && entity.tickCount % 1200 == 0
+        if (!level.isClientSide && entity.tickCount % SneakyCurses.CONFIG
+                .server().revealChanceTickInterval == 0
                 && (!(entity instanceof Player player) || !player.getAbilities().invulnerable)) {
             for (EquipmentSlot equipmentSlot : EquipmentSlot.values()) {
                 ItemStack itemStack = entity.getItemBySlot(equipmentSlot);
@@ -57,13 +60,13 @@ public class CurseRevealHandler {
                         revealAllCurses(itemStack);
                         entity.playSound(SoundEvents.ENCHANTMENT_TABLE_USE, 1.0F,
                                 entity.getRandom().nextFloat() * 0.1F + 0.9F);
-                        // TODO: Fix displaying message.
-                        // if (entity instanceof Player player) {
-                        // player.displayClientMessage(
-                        // Component.translatable(KEY_ITEM_CURSES_REVEALED, itemStack.getDisplayName())
-                        // .withStyle(ChatFormatting.DARK_PURPLE),
-                        // false);
-                        // }
+                        if (entity instanceof Player player
+                                && SneakyCurses.CONFIG.client().notifyClientOfDecurseByWear) {
+                            player.displayClientMessage(
+                                    new TranslatableComponent(KEY_ITEM_CURSES_REVEALED, itemStack.getDisplayName())
+                                            .withStyle(ChatFormatting.DARK_PURPLE),
+                                    false);
+                        }
                         break;
                     }
                 }

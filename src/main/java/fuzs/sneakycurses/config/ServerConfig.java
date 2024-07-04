@@ -16,7 +16,10 @@ public class ServerConfig extends AbstractConfig {
     @Config(name = "material_cost_for_revealing_curses_in_anvil", description = "Amount of experience levels required to make curses on an item visible by combining with an item from the 'sneakycurses:reveal_curses' tag (amethyst shards by default) in an anvil.")
     @Config.IntRange(min = 1)
     public int revealCursesCost = 5;
-    @Config(description = "Chance wearing or using a cursed piece of equipment will trigger the curses to be revealed. Set to 0.0 to disable revealing curses this way.")
+    @Config(name = "tick_interval_for_possible_reveal_during_usage", description = "The tick interval at which a piece of equipement is attempted to be decursed. The probability that an item is decursed during an attempt depends on the 'curse_reveal_chance' value.")
+    @Config.IntRange(min = 1)
+    public int revealChanceTickInterval = 1200;
+    @Config(name = "curse_reveal_chance", description = "Chance wearing or using a cursed piece of equipment will trigger the curses to be revealed. Set to 0.0 to disable revealing curses this way.")
     @Config.DoubleRange(min = 0.0, max = 1.0)
     public double curseRevealChance = 0.05;
 
