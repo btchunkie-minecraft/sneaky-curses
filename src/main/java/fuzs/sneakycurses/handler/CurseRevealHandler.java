@@ -40,12 +40,6 @@ public class CurseRevealHandler {
             output.accept(itemStack);
             materialCost.accept(1);
             enchantmentCost.accept(SneakyCurses.CONFIG.server().revealCursesCost);
-            if (SneakyCurses.CONFIG.client().notifyClientOfDecurseByAnvil) {
-                player.displayClientMessage(
-                        new TranslatableComponent(KEY_ITEM_CURSES_REVEALED, itemStack.getDisplayName())
-                                .withStyle(ChatFormatting.DARK_PURPLE),
-                        false);
-            }
             return EventResult.INTERRUPT;
         }
         return EventResult.PASS;
