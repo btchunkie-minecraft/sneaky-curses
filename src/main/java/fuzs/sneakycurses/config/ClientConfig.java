@@ -15,6 +15,10 @@ public class ClientConfig extends AbstractConfig {
     public boolean affectBooks = false;
     @Config(name = "shift_shows_curses", description = "Temporarily show tooltip as usual including curses while shift key is held.")
     public boolean shiftShows = false;
+    @Config(name = "notify_player_of_decurse_by_wear", description = "Send a message to the client chat to inform the player that an item has been decursed by using or wearing it.")
+    public boolean notifyClientOfDecurseByWear = true;
+    @Config(name = "notify_player_of_decurse_by_anvil", description = "Send a message to the client chat to inform the player that an item has been decursed using an anvil.")
+    public boolean notifyClientOfDecurseByAnvil = false;
 
     @SuppressWarnings("deprecation")
     public ClientConfig() {
