@@ -38,8 +38,8 @@ public class CurseRevealHandler {
             ItemStack itemStack = leftInput.copy();
             revealAllCurses(itemStack);
             output.accept(itemStack);
-            materialCost.accept(1);
-            enchantmentCost.accept(SneakyCurses.CONFIG.server().revealCursesCost);
+            materialCost.accept(SneakyCurses.CONFIG.server().revealCursesAmethystCost);
+            enchantmentCost.accept(SneakyCurses.CONFIG.server().revealCursesExperienceCost);
             return EventResult.INTERRUPT;
         }
         return EventResult.PASS;
