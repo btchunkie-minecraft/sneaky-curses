@@ -13,9 +13,12 @@ public class ServerConfig extends AbstractConfig {
     public boolean affectBooks = true;
     @Config(name = "shift_shows_curses_in_creative", description = "Temporarily show curses as normal text while any shift key is held in creative mode.")
     public boolean shiftShows = true;
-    @Config(name = "material_cost_for_revealing_curses_in_anvil", description = "Amount of experience levels required to make curses on an item visible by combining with an item from the 'sneakycurses:reveal_curses' tag (amethyst shards by default) in an anvil.")
+    @Config(name = "experience_cost_for_revealing_curses_in_anvil", description = "Amount of experience levels required to make curses on an item visible by combining with an item from the 'sneakycurses:reveal_curses' tag (amethyst shards by default) in an anvil.")
     @Config.IntRange(min = 1)
-    public int revealCursesCost = 5;
+    public int revealCursesExperienceCost = 5;
+    @Config(name = "material_cost_for_revealing_curses_in_anvil", description = "Amount of 'sneakycurses:reveal_curses' tag (amethyst shards by default) required to make curses on an item visible.")
+    @Config.IntRange(min = 1, max = 64)
+    public int revealCursesAmethystCost = 32;
     @Config(name = "tick_interval_for_possible_reveal_during_usage", description = "The tick interval at which a piece of equipement is attempted to be decursed. The probability that an item is decursed during an attempt depends on the 'curse_reveal_chance' value.")
     @Config.IntRange(min = 1)
     public int revealChanceTickInterval = 1200;
